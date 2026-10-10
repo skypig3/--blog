@@ -1,0 +1,76 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: personal-blog-backend
+
+  # SQLite：pragma 统一写在 URL 上（实测 foreign_keys / busy_timeout / journal_mode 都能生效）
+  # ${blog.data-dir} 由 BlogApplication 在启动前写成系统属性，固定指向 backend/data，
+  # 这样从命令行还是从 IDEA 启动（两者工作目录不同）打开的都是同一个库文件。
+  datasource:
+    url: "jdbc:sqlite:${blog.data-dir:data}/blog.db?foreign_keys=on&busy_timeout=5000&journal_mode=WAL"
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      # SQLite 是单写者模型：池子开大只会把"排队"变成 SQLITE_BUSY 报错
+      maximum-pool-size: 1
+      minimum-idle: 1
+
+  # 每次启动都跑建表 + 初始化数据脚本；两个脚本都写成幂等
+  # （IF NOT EXISTS / INSERT OR IGNORE），重复启动不会报错、不会造出第二个 admin。
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/seed.sql
+
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 4MB
+
+  jackson:
+    time-zone: GMT+8
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    # 开发期把 SQL 打到控制台，方便答辩演示"数据真的进了库"；要安静就注释掉这两行
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 业务自定义配置
+blog:
+  # 实际值会被 BlogApplication 写入的系统属性覆盖成绝对路径（backend/data）；
+  # 这里的字面值只是"没走 main() 启动时"的兜底，比如单元测试。
+  data-dir: data
+  upload-dir: ${blog.data-dir}/uploads
+  upload-max-size-mb: 2
+  upload-allowed-ext: jpg,jpeg,png,gif,webp
+  hot-window-days: 30
+  hot-limit: 10
+  hot-weight-view: 1
+  hot-weight-like: 2
+  hot-weight-collect: 3
+  hot-weight-comment: 1
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  default-produces-media-type: application/json
+
+logging:
+  level:
+    root: info
+    com.sky.blog: debug

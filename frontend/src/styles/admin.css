@@ -1,0 +1,237 @@
+/* ============================================================================
+ * 后台共用样式（Linear 深色设计系统）
+ * 表格 / 工具栏 / 统计卡等在各后台页面反复出现，抽到这里，页面只写业务结构。
+ * ==========================================================================*/
+
+.a-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: var(--sp-lg);
+  flex-wrap: wrap;
+}
+.a-head h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: var(--display-weight);
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+.a-head .caption {
+  margin-top: 5px;
+}
+
+.a-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  margin-bottom: var(--sp-md);
+}
+.a-toolbar__grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+.a-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.a-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.a-panel__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+
+.a-table-wrap {
+  overflow-x: auto;
+}
+.a-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.a-table th {
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  background: var(--surface);
+}
+.a-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 0.875rem;
+  color: var(--text-body);
+  vertical-align: middle;
+}
+.a-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.a-table tbody tr:hover {
+  background: var(--surface-2);
+}
+.a-table .cell-strong {
+  color: var(--text);
+  font-weight: 500;
+}
+.a-table .cell-link {
+  color: var(--text);
+  font-weight: 500;
+}
+.a-table .cell-link:hover {
+  color: var(--primary);
+}
+.a-table .cell-num {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+.a-table .cell-muted {
+  color: var(--text-subtle);
+  font-size: 0.8125rem;
+}
+.a-table .cell-clamp {
+  max-width: 320px;
+}
+.a-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.a-pager {
+  margin-top: var(--sp-lg);
+}
+
+.a-notice {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 0.875rem;
+  color: var(--text-body);
+  margin-bottom: var(--sp-md);
+}
+.a-notice--error {
+  border-color: color-mix(in srgb, var(--error) 45%, var(--border));
+  color: var(--error);
+}
+.a-notice--warn {
+  border-color: color-mix(in srgb, var(--warning) 45%, var(--border));
+  color: var(--warning);
+}
+
+/* 统计卡 */
+.a-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-lg);
+}
+.a-stat {
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  position: relative;
+}
+.a-stat__label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+  letter-spacing: 0.2px;
+}
+.a-stat__value {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  color: var(--text);
+}
+.a-stat__hint {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+.a-stat--accent {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+}
+.a-stat--warn {
+  border-color: color-mix(in srgb, var(--warning) 40%, var(--border));
+}
+
+.a-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-md);
+}
+
+.a-list {
+  display: flex;
+  flex-direction: column;
+}
+.a-list__item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.a-list__item:last-child {
+  border-bottom: 0;
+}
+.a-list__main {
+  min-width: 0;
+  flex: 1;
+}
+.a-list__title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.a-list__meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+
+@media (max-width: 1100px) {
+  .a-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  .a-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}

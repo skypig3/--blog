@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>个人博客</title>
+    <!-- 设计系统指定字体（Cormorant Garamond ≈ Copernicus / Inter ≈ StyreneB / JetBrains Mono）。
+         离线时自动回退到系统衬线体与无衬线体，不影响可用性。 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      // 首屏按路径预先设置主题 class，避免深链到 /admin 时先闪一下浅色再变深色
+      document.body.classList.add(location.pathname.startsWith('/admin') ? 'theme-admin' : 'theme-portal')
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

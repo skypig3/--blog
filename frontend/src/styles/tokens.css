@@ -1,0 +1,232 @@
+/* ============================================================================
+ * 设计令牌 · 双主题
+ * ----------------------------------------------------------------------------
+ * 前台（门户 / 个人中心）使用 Claude 暖色编辑风：暖米画布 + 珊瑚主色 + 衬线大标题。
+ *   → 依据 frontend/DESIGN.md
+ * 后台（管理台）使用 Linear 深色产品风：近黑画布 + 薰衣草主色 + 编号表面阶梯。
+ *   → 依据 backend/DESIGN.md
+ *
+ * 组件只消费下面的「语义令牌」（--bg / --surface / --primary / --text …），
+ * 换主题时只需在 <body> 上切 class（theme-portal / theme-admin），组件代码完全不动。
+ *
+ * 为什么用 body class 而不是 <html data-theme>：某些宿主环境会往 <html> 注入
+ * 自己的 data-theme（例如 dark），会把我们设置的值覆盖掉；body 上的 class 不会被干扰。
+ * ==========================================================================*/
+
+/* ---------------------------------------------------------------------------
+ * 主题一：前台 · Claude（默认）
+ * -------------------------------------------------------------------------*/
+:root,
+body.theme-portal {
+  /* 原始调色板 */
+  --c-canvas: #faf9f5;
+  --c-surface-soft: #f5f0e8;
+  --c-surface-card: #efe9de;
+  --c-surface-cream-strong: #e8e0d2;
+  --c-surface-dark: #181715;
+  --c-surface-dark-elevated: #252320;
+  --c-surface-dark-soft: #1f1e1b;
+  --c-hairline: #e6dfd8;
+  --c-hairline-soft: #ebe6df;
+  --c-ink: #141413;
+  --c-body: #3d3d3a;
+  --c-body-strong: #252523;
+  --c-muted: #6c6a64;
+  --c-muted-soft: #8e8b82;
+  --c-primary: #cc785c;
+  --c-primary-active: #a9583e;
+  --c-primary-disabled: #e6dfd8;
+  --c-on-primary: #ffffff;
+  --c-on-dark: #faf9f5;
+  --c-on-dark-soft: #a09d96;
+  --c-teal: #5db8a6;
+  --c-amber: #e8a55a;
+  --c-success: #5db872;
+  --c-warning: #d4a017;
+  --c-error: #c64545;
+
+  /* 语义令牌 */
+  --bg: var(--c-canvas);
+  --bg-band: var(--c-surface-soft);
+  --surface: var(--c-surface-card);
+  --surface-2: var(--c-surface-cream-strong);
+  --surface-3: var(--c-surface-soft);
+  --surface-inverse: var(--c-surface-dark);
+  --surface-inverse-2: var(--c-surface-dark-elevated);
+  --input-bg: var(--c-canvas);
+  --border: var(--c-hairline);
+  --border-soft: var(--c-hairline-soft);
+  --border-strong: #d8cfc2;
+
+  --text: var(--c-ink);
+  --text-body: var(--c-body);
+  --text-muted: var(--c-muted);
+  --text-subtle: var(--c-muted-soft);
+  --text-on-inverse: var(--c-on-dark);
+  --text-on-inverse-soft: var(--c-on-dark-soft);
+
+  --primary: var(--c-primary);
+  --primary-hover: var(--c-primary-active);
+  --primary-active: var(--c-primary-active);
+  --primary-soft: rgba(204, 120, 92, 0.12);
+  --on-primary: var(--c-on-primary);
+  --focus-ring: rgba(204, 120, 92, 0.18);
+  --overlay: rgba(20, 20, 19, 0.5);
+
+  --success: var(--c-success);
+  --warning: var(--c-warning);
+  --error: var(--c-error);
+  --teal: var(--c-teal);
+  --amber: var(--c-amber);
+
+  /* 字体 */
+  --font-display: 'Cormorant Garamond', 'EB Garamond', Georgia, 'Times New Roman',
+    'Songti SC', 'SimSun', serif;
+  --font-body: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas,
+    'Courier New', monospace;
+
+  /* 标题字阶（衬线、正体 400、负字距 —— Claude 的编辑气质） */
+  --display-weight: 400;
+  --fs-h1: clamp(2.25rem, 5.6vw, 4rem); /* 64px */
+  --ls-h1: -1.5px;
+  --fs-h2: clamp(1.85rem, 4vw, 3rem); /* 48px */
+  --ls-h2: -1px;
+  --fs-h3: clamp(1.5rem, 3vw, 2.25rem); /* 36px */
+  --ls-h3: -0.5px;
+  --fs-h4: clamp(1.3rem, 2.4vw, 1.75rem); /* 28px */
+  --ls-h4: -0.3px;
+  --fs-title-lg: 1.375rem; /* 22px */
+  --fs-title-md: 1.125rem; /* 18px */
+  --fs-title-sm: 1rem; /* 16px */
+  --fs-body: 1rem;
+  --fs-body-sm: 0.875rem;
+  --fs-caption: 0.8125rem;
+  --fs-eyebrow: 0.75rem;
+
+  /* 圆角 */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-pill: 9999px;
+
+  /* 间距 */
+  --sp-xxs: 4px;
+  --sp-xs: 8px;
+  --sp-sm: 12px;
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 32px;
+  --sp-xxl: 48px;
+  --sp-section: 96px;
+
+  --max-w: 1200px;
+  --nav-h: 64px;
+  --shadow-card: 0 1px 3px rgba(20, 20, 19, 0.08);
+  --shadow-pop: 0 18px 48px rgba(20, 20, 19, 0.16);
+}
+
+/* ---------------------------------------------------------------------------
+ * 主题二：后台 · Linear
+ * -------------------------------------------------------------------------*/
+body.theme-admin {
+  --c-canvas: #010102;
+  --c-surface-1: #0f1011;
+  --c-surface-2: #141516;
+  --c-surface-3: #18191a;
+  --c-surface-4: #191a1b;
+  --c-hairline: #23252a;
+  --c-hairline-strong: #34343a;
+  --c-hairline-tertiary: #3e3e44;
+  --c-primary: #5e6ad2;
+  --c-primary-hover: #828fff;
+  --c-primary-focus: #5e69d1;
+  --c-ink: #f7f8f8;
+  --c-ink-muted: #d0d6e0;
+  --c-ink-subtle: #8a8f98;
+  --c-ink-tertiary: #62666d;
+  --c-success: #27a644;
+  --c-warning: #d4a017;
+  --c-error: #e5484d;
+
+  --bg: var(--c-canvas);
+  --bg-band: var(--c-surface-1);
+  --surface: var(--c-surface-1);
+  --surface-2: var(--c-surface-2);
+  --surface-3: var(--c-surface-3);
+  --surface-inverse: #ffffff;
+  --surface-inverse-2: #f5f6f6;
+  --input-bg: var(--c-surface-1);
+  --border: var(--c-hairline);
+  --border-soft: #1b1d21;
+  --border-strong: var(--c-hairline-strong);
+
+  --text: var(--c-ink);
+  --text-body: var(--c-ink-muted);
+  --text-muted: var(--c-ink-subtle);
+  --text-subtle: var(--c-ink-tertiary);
+  --text-on-inverse: #000000;
+  --text-on-inverse-soft: #3d3d3a;
+
+  --primary: var(--c-primary);
+  --primary-hover: var(--c-primary-hover);
+  --primary-active: var(--c-primary-focus);
+  --primary-soft: rgba(94, 106, 210, 0.16);
+  --on-primary: #ffffff;
+  --focus-ring: rgba(94, 106, 210, 0.35);
+  --overlay: rgba(0, 0, 0, 0.7);
+
+  --success: var(--c-success);
+  --warning: var(--c-warning);
+  --error: var(--c-error);
+  --teal: var(--c-success);
+  --amber: var(--c-warning);
+
+  --font-display: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Microsoft YaHei', Roboto, sans-serif;
+  --font-body: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --display-weight: 600;
+  --fs-h1: clamp(1.75rem, 3.4vw, 2.5rem); /* 40px */
+  --ls-h1: -1px;
+  --fs-h2: clamp(1.5rem, 2.6vw, 1.75rem);
+  --ls-h2: -0.6px;
+  --fs-h3: clamp(1.25rem, 2vw, 1.375rem);
+  --ls-h3: -0.4px;
+  --fs-h4: 1.125rem;
+  --ls-h4: -0.3px;
+  --fs-title-lg: 1.25rem;
+  --fs-title-md: 1rem;
+  --fs-title-sm: 0.875rem;
+  --fs-body: 1rem;
+  --fs-body-sm: 0.875rem;
+  --fs-caption: 0.75rem;
+  --fs-eyebrow: 0.8125rem;
+
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-pill: 9999px;
+
+  --sp-xxs: 4px;
+  --sp-xs: 8px;
+  --sp-sm: 12px;
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 32px;
+  --sp-xxl: 48px;
+  --sp-section: 96px;
+
+  --max-w: 1280px;
+  --nav-h: 56px;
+  --shadow-card: none;
+  --shadow-pop: 0 24px 60px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}

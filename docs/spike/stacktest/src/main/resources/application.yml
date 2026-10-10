@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: "jdbc:sqlite:./data/blog.db?foreign_keys=on&busy_timeout=5000&journal_mode=WAL"
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      maximum-pool-size: 1
+      minimum-idle: 1
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    root: warn
+    demo: info

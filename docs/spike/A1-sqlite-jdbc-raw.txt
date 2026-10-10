@@ -1,0 +1,22 @@
+db_exists_before = false
+path_has_non_ascii = true
+driver_class = org.sqlite.JDBC ok
+sqlite_version = 3.53.4
+driver_version = 3.53.4.0
+supports_getGeneratedKeys = true
+journal_mode_after_set = wal
+busy_timeout_default_ms = 3000
+foreign_keys_on = 1
+ddl = ok (autoincrement + default datetime + FK refs)
+user_id_from_select = 1
+insert_rows = 1
+generated_key = 1
+page3_first_row = 6 | row-4 | 2026-10-09 16:06:30
+page3_rows = 6
+total_rows = 26
+supports_upsert = true
+concurrent_writer_with_open_tx = BLOCKED -> [SQLITE_BUSY] The database file is locked (database is locked)
+db_file_created = true
+journal_mode_persisted_after_reopen = wal
+integrity_check = ok
+

@@ -1,0 +1,106 @@
+=== 端到端自测 2026-10-09 19:12:15 ===
+ 1. 管理员登录                              OK    HTTP 200 role=ADMIN
+ 2. 小明登录                                 OK    HTTP 200 user=xiaoming
+ 3. 小红登录                                 OK    HTTP 200 user=xiaohong
+ 4. 游客取 /auth/me 应 401                   OK    HTTP 401 code=40100
+ 5. 错密码应 401                             OK    HTTP 401
+ 6. 用户不存在与密码错提示一致（防枚举） OK    msg=用户名或密码错误
+ 7. 注册新用户                              OK    HTTP 200 role=USER
+ 8. 重复用户名应 409                       OK    HTTP 409
+ 9. 重复邮箱应 409                          OK    HTTP 409
+10. 非法入参应 400                          OK    HTTP 400
+11. 注册时塞 role 字段也必须是 USER    OK    role=USER
+12. 用户接口不返回密码哈希            OK    hasHash=False
+13. 分类列表含真实计数                  OK    HTTP 200 技术笔记=3 sql=3
+14. 标签列表                                 OK    HTTP 200 n=6
+15. 分页第1页                                OK    HTTP 200 total=7 n=5 pages=2
+16. 分页第2页只剩2条                      OK    HTTP 200 n=2
+17. 英文关键词搜标题                     OK    HTTP 200 total=1 sql=1
+18. 英文关键词大小写不敏感            OK    HTTP 200 total=1
+19. 中文关键词能搜到                     OK    HTTP 200 total=1
+20. 分类筛选                                 OK    HTTP 200 total=3
+21. 标签筛选                                 OK    HTTP 200 total=2
+22. 无结果时 total=0（前端据此显示空态） OK    HTTP 200 total=0
+23. 热门按加权分排序                     OK    order=[101, 102, 103]
+24. 详情（游客）                           OK    HTTP 200 status=PUBLISHED
+25. 待审核文章对游客 404                 OK    HTTP 404
+26. 评论树只含已通过                     OK    top=[201, 202] childrenOf202=[203]
+27. 小明存草稿                              OK    HTTP 200 status=DRAFT
+28. 草稿对游客 404                          OK    HTTP 404
+29. 提交审核 DRAFT->PENDING                  OK    HTTP 200 status=PENDING
+30. 驳回不填原因应 422                    OK    HTTP 422
+31. 审核通过 PENDING->PUBLISHED              OK    HTTP 200 status=PUBLISHED
+32. 重复点通过应 409（CAS 生效）       OK    HTTP 409
+33. 通过后游客可见                        OK    HTTP 200 status=PUBLISHED
+34. 改已发布文章 -> PENDING                OK    HTTP 200 status=PENDING
+35. 改完游客立刻看不到                  OK    HTTP 404
+36. 驳回并带原因                           OK    HTTP 200 status=REJECTED
+37. 作者能看到驳回原因                  OK    reason=E2E 驳回原因
+38. 小红改小明文章应 403                 OK    HTTP 403 code=40301
+39. 非作者读他人文章应 403              OK    HTTP 403
+40. 驳回后重新提交                        OK    HTTP 200 status=PENDING
+41. 作者撤回 PENDING->DRAFT                  OK    HTTP 200 status=DRAFT
+42. 撤回后管理员点通过应 409（作业 2.3.3） OK    HTTP 409
+43. 作者删除自己的文章                  OK    HTTP 200
+44. 删除后 404                                OK    HTTP 404
+45. 小红评论进 PENDING                      OK    HTTP 200 status=PENDING
+46. 未过审评论前台不可见               OK    top=[201, 202]
+47. 评论审核通过                           OK    HTTP 200 status=PUBLISHED
+48. 过审后前台可见                        OK    top=[201, 202, 214]
+49. 回复也进 PENDING                         OK    HTTP 200 status=PENDING
+50. 回复可被审核（审核覆盖回复）   OK    HTTP 200 status=PUBLISHED
+51. 回复挂到父评论下                     OK    childrenOf201=[215]
+52. 评论计数=库中已通过条数           OK    api=5 sql=5
+53. api 与 sql 相等                           OK    same
+54. 重复审核同一条评论应 409           OK    HTTP 409
+55. 评论未发布文章应 404                 OK    HTTP 404
+56. 点赞两次：先取消再点赞，回到原值 OK    2->1->2
+57. 收藏开关                                 OK    HTTP 200 active=True count=2
+58. 我的收藏列表（演示数据里已有 102、106） OK    HTTP 200 total=3
+59. 游客点赞应 401                          OK    HTTP 401
+60. 详情带出我的点赞/收藏状态        OK    liked=True collected=True
+61. 点赞计数=关系表行数                 OK    api=2 sql=2
+62. 统计-用户总数对得上 SQL             OK    api=5 sql=5
+63. 统计-文章总数                          OK    api=12 sql=13
+64. 统计-已发布数                          OK    api=7 sql=7
+65. 统计-待审核文章数                    OK    api=3 sql=3
+66. 统计-待审核评论数                    OK    api=2 sql=2
+67. 统计-阅读量汇总                       OK    api=897 sql=897
+68. 后台首页含待办任务                  OK    recent=5 pending=3
+69. 后台按状态筛文章                     OK    HTTP 200 total=3
+70. 后台按作者筛文章                     OK    HTTP 200 total=5
+71. 审核记录含操作者与说明            OK    total=6 first=ARTICLE_REJECT/admin
+72. 普通用户访问后台应 403              OK    HTTP 403 code=40300
+73. 游客访问后台应 401                    OK    HTTP 401
+74. 下架已发布文章                        OK    HTTP 200 status=REMOVED
+75. 下架后游客 404                          OK    HTTP 404
+76. 作者能看到下架原因                  OK    reason=E2E 下架原因
+77. 重复下架应 409                          OK    HTTP 409
+78. 下架文章直接审核通过应 409        OK    HTTP 409
+79. 下架不填原因应 400                    OK    HTTP 400
+80. 禁用小红                                 OK    HTTP 200 status=DISABLED
+81. 已登录会话立即失效（作业 2.2.1） OK    HTTP 401 code=40102
+82. 禁用账号不能登录                     OK    HTTP 401 code=40102
+83. 管理员禁用自己应 422                 OK    HTTP 422
+84. 降级自己应 422                          OK    HTTP 422
+85. 恢复账号                                 OK    HTTP 200 status=ACTIVE
+86. 恢复后能登录                           OK    HTTP 200
+87. 改密码需校验原密码                  OK    HTTP 400
+88. 小红在第二个会话登录（模拟另一台设备） OK    HTTP 200
+89. 改密成功                                 OK    HTTP 200 code=0
+90. 改密后当前会话被服务端销毁 -> 40100 OK    HTTP 401 code=40100
+91. 另一台设备的旧会话被凭据版本号挡掉 -> 40104 OK    HTTP 401 code=40104
+92. 新密码可登录                           OK    HTTP 200
+93. 改回演示密码                           OK    HTTP 200
+94. 资料接口也不返回密码               OK    hasHash=False
+95. 上传真 PNG                                OK    HTTP 200 url=/uploads/2026-10/a954a1b0456f4fa0b7d9349634b4e483.png
+96. 上传的文件能访问                     OK    HTTP 200
+97. 扩展名对但内容不是图片应 400     OK    HTTP 400
+98. 非图片扩展名应 400                    OK    HTTP 400
+99. 游客上传应 401                          OK    HTTP 401
+100. 退出登录                                 OK    HTTP 200
+101. 退出后不得继续执行需登录操作   OK    HTTP 401
+102. 退出后后台接口也 401                 OK    HTTP 401
+----------------------------------------
+共 102 项检查，失败 0 项
+全部通过

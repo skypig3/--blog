@@ -1,0 +1,27 @@
+# ---- 构建产物 ----
+backend/target/
+frontend/dist/
+frontend/node_modules/
+
+# ---- 运行时数据：数据库文件与上传的图片都不入库 ----
+# 重建方式见 README「数据初始化」一节
+backend/data/
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# ---- 测试与自测产生的临时文件 ----
+backend/tools/.e2e/
+backend/tools/.api-snapshot.json
+*.log
+
+# ---- IDE ----
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# ---- 本地覆盖配置（可能含机器相关路径）----
+*.local.yml
+application-local.yml
